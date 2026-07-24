@@ -1,23 +1,18 @@
 # CADFusion Baseline Evaluation & Benchmarking Pipeline
 
-This repository archives the benchmarking scripts, evaluation data, and execution pipeline used to evaluate the zero-shot spatial reasoning capabilities of **Microsoft's CADFusion** model (LLaMA-3-8B LoRA). 
+This folder contains the benchmarking scripts, evaluation data, and execution pipeline used to evaluate the zero-shot spatial reasoning capabilities of **Microsoft's CADFusion** model (LLaMA-3-8B LoRA). 
 
 The goal of this evaluation is to quantify the text-to-CAD generation success rate when the model's outputs are strictly validated through a physical geometry kernel (OpenCASCADE), rather than relying on surface-level text or syntax parsing.
 
 ---
 
-## 📌 Project Overview & Methodological Caveats
+## Project Overview & Methodological Caveats
 
 This benchmark evaluates CADFusion's ability to generate valid SkexGen parametric command sequences under two strict conditions: **Direct Zero-Shot** and **Chain-of-Thought (CoT)** prompting.
 
-### Crucial Architecture Alignment
-During development, we identified a critical architectural constraint regarding the CADFusion LoRA weights:
-*   **Base vs. Instruct Mismatch:** The CADFusion LoRA patch must **only** be applied to the raw, unaligned `NousResearch/Meta-Llama-3-8B` base model. Applying these mathematical matrices to the `Instruct` tuned variant causes immediate Representation Collapse, plunging valid syntax rates to near zero.
-*   **Decoding Strategy:** To evaluate the true out-of-the-box baseline without undocumented hyperparameter assistance, this benchmark strictly utilizes **Greedy Decoding** (`do_sample=False`, `num_beams=1`).
-
 ---
 
-## 🛠️ Prerequisites & Environment Setup
+## Prerequisites & Environment Setup
 
 To recreate this benchmarking environment, you will need a GPU-enabled Python environment with access to the Hugging Face Transformers library and Microsoft's official CADFusion evaluation tools.
 
@@ -34,7 +29,7 @@ To actually compile the output tokens into 3D `.step` files, you must download t
 
 ---
 
-## 🚀 Execution Pipeline
+## Execution Pipeline
 
 The benchmarking process is divided into four distinct automated steps. Run the scripts in the following order:
 
@@ -71,13 +66,13 @@ python match_results_reasoning.py
 
 ---
 
-## 📊 Baseline Findings
+## Baseline Findings
 
 On a 57-prompt evaluation set, the CADFusion model demonstrated the following baseline performance when parsed through the strict geometry kernel:
 
 | Prompting Strategy | Target Output Syntax | Total Prompts | Valid Compilations | Success Rate |
 | :--- | :--- | :--- | :--- | :--- |
-| **Direct Zero-Shot** | SkexGen Tokens | 57 | 15 | **26.3%** |
-| **Chain-of-Thought** | SkexGen Tokens | 57 | 18 | **31.5%** |
+| **Direct Zero-Shot** | SkexGen Tokens | 77 | 15 | **19.5%** |
+| **Chain-of-Thought** | SkexGen Tokens | 77 | 18 | **23.4%** |
 
 *Note: Failures were predominantly caused by "coordinate drift," where early mathematical miscalculations led to unclosed loops or impossible constraints that the geometry compiler rejected.*

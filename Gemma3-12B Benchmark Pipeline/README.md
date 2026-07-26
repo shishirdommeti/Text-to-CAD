@@ -14,26 +14,27 @@ Unlike standard zero-shot benchmarks, this pipeline features an automated compil
 ## Repository Structure
 
 *   `README.md` — This documentation.
-*   `requirements.txt` — Exact Python and CUDA dependencies.
-*   `benchmark_pipeline.py` — The main script containing the synthetic ID generator, sandbox execution, and the LLM auto-correction loop.
-*   `advisor_prompts.xlsx` — The source dataset containing the text prompts.
+*   `environment.yml` — Exact Python and CUDA dependencies.
+*   `iterative_inference_strict.py` — The main script containing the synthetic ID generator, sandbox execution, and the LLM auto-correction loop, as well as the STL generation.
+*   `EvaluationPrompts(Reasoning).xlsx` — The source dataset containing the text prompts.
 
 ---
 
 ## Reproduction Steps
 
 1.  **Environment Setup**
-    Ensure a Linux environment with CUDA 12.1 and at least 24GB of VRAM for `bfloat16` inference.
-    ```bash
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    ```
+
+Because CadQuery requires the OpenCASCADE kernel, this project relies on Conda for dependency management. 
+
+To recreate the exact execution environment, run:
+
+1. `conda env create -f environment.yml`
+2. `conda activate gemma3-12b`
 
 2.  **Execution**
     Run the main pipeline script. The script will ingest the Excel file, assign synthetic IDs, and begin the generation and auto-correction cycles.
     ```bash
-    python benchmark_pipeline.py
+    python iterative_inference_strict.py
     ```
 
 ## Evaluation Criteria

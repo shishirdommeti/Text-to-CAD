@@ -1,0 +1,29 @@
+name: gemma3-12b
+channels:
+  - nvidia         # Added to fix the libcublas error
+  - cadquery
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip            # Added to fix the pip warning
+  
+  # CAD Environment
+  - cadquery=2.4.0
+  
+  # Data handling
+  - pandas
+  - openpyxl
+  
+  # Machine Learning & Inference
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=12.1
+  
+  # Pip packages for HuggingFace / Utilities
+  - pip:
+    - transformers
+    - accelerate
+    - tqdm
